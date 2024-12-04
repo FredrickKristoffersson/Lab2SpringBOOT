@@ -1,0 +1,27 @@
+DROP TABLE IF EXISTS place;
+DROP TABLE IF EXISTS category;
+
+CREATE TABLE category (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    symbol VARCHAR(255),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE place (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category_id INT NOT NULL,
+    user_id INT NOT NULL,
+    status ENUM('PUBLIC', 'PRIVATE') DEFAULT 'PUBLIC',
+    description TEXT,
+    coordinates POINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_place_category FOREIGN KEY (category_id) REFERENCES category(id)
+                   ON DELETE CASCADE
+                   ON UPDATE CASCADE
+);
